@@ -1,0 +1,6 @@
+REGISTER_FAILD = '''the phone number for submission has not acceptable format '''
+REGISTER_ACCEPT_MOBILE = '''the phone number has registered successfully  '''
+REGISTER_ACCEPT_LANDLINE = '''the landline number has registered successfully  '''
+REGISTER_FAILD_CHAR_COUNT = '''the count of figures is not 11 '''
+REGISTER_FAILD_WRONG_NUMBER = '''the number does not start with 0'''
+SHOW_REGISTERED_PHONE_NOT_FOUND='''no phone_number found'''
