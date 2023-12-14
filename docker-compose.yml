@@ -16,7 +16,7 @@ services:
     restart: always
     volumes:
       - ./uwsgi:/tmp/uwsgi/
-      - ./static:/var/www/moshavereAPI/assets/:ro
+      - ./staticfiles:/var/www/moshavereAPI/assets/:ro
     ports:
       - "9994:80"
     depends_on:
