@@ -4,7 +4,7 @@ RUN apt-get update && \
     pip install uwsgi
 
 WORKDIR /code
-COPY web/ /code
+COPY . /code
 RUN pip install  --default-timeout=1000 -r /code/requirements.txt
 
 CMD [ "uwsgi", "--ini", "/code/moshavereAPI.uwsgi.ini" ]
