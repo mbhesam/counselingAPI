@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    env_file: .env
+    volumes:
+       - ../data/postgres:/data/postgres
+    ports:
+      - "9995:5432"
+    restart: unless-stopped
+
+  nginx:
+    build: nginx/
+    restart: always
+    volumes:
+      - ./uwsgi:/tmp/uwsgi/
+      - ./static:/var/www/moshavereAPI/assets/:ro
+    ports:
+      - "9994:80"
+    depends_on:
+      - django
+
+  django:
+    build: .
+    restart: always
+    command: >
+      sh -c "python /code/manage.py collectstatic --noinput
+      && uwsgi --ini /code/moshavereAPI.uwsgi.ini"
+    volumes:
+      - ./uwsgi:/tmp/uwsgi/
+      - ./static:/staticfiles/
+      - ./:/code
+
