@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'registerAPI',
     'drf_yasg',
     'corsheaders',
+    'users',
 ]
 
 MIDDLEWARE = [

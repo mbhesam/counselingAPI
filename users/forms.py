@@ -2,11 +2,11 @@ from django import forms
 from .models import Users
 from django.utils.translation import gettext_lazy as _
 
-class SignupInformationForm(forms.Form):
+class SignupInformationForm(forms.ModelForm):
     class Meta:
         model=Users
-        fields=("first_name","last_name","phone_number","birthday_at","father_name","mother_name","married","marriage_history","children_numbers")
-        labels = {'first_name': 'نام','last_name':'نام خانوادگی',
+        fields=("first_name","last_name","gender","phone_number","birthday_at","father_name","mother_name","married","marriage_history","children_numbers")
+        labels = {'first_name': 'نام','last_name':'نام خانوادگی',"gender": "جنسیت",
                   'phone_number':'شماره موبایل','birthday_at':'تاریخ و ساعت تولد',
                   'father_name':'نام ئدر','mother_name':'نام مادر',
                   'married':'متاهل یا محرد','marriage_history':'تعداد سابقه ازدواج',

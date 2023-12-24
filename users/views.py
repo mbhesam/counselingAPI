@@ -12,5 +12,5 @@ def get_signup_info(request):
         if form.is_valid():
             return HttpResponseRedirect("/users/thanks/")
     else:
-        return HttpResponse("NOT ALLOWED METHODS")
+        form = SignupInformationForm()
     return render(request, "form.html", {"form": form})
