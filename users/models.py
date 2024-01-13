@@ -15,6 +15,8 @@ class Users(models.Model):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100,null=False)
     last_name = models.CharField(max_length=100,null=False)
+    platform = models.CharField(max_length=20,null=False)
+    username = models.CharField(max_length=200,null=False)
     gender = models.CharField(max_length=5,choices=GENDER_CHOICES,null=False)
     birthday_at = jmodels.jDateTimeField(null=False)
     father_name = models.CharField(max_length=100,null=False)

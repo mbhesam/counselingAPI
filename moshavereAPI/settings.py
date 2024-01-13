@@ -128,6 +128,16 @@ DB_NAME = env("DB_NAME")
 DB_USERNAME = env("DB_USERNAME")
 DB_PASSWORD = env("DB_PASSWORD")
 DB_PORT = env("DB_PORT")
+BOT_TOKEN = env("BOT_TOKEN")
+CHAT_ID = env("CHAT_ID")
+HTTP_PROXY = env("HTTP_PROXY")
+HTTPS_PROXY = env("HTTPS_PROXY")
+REQUEST_TIME_OUT = env("REQUEST_TIME_OUT")
+
+REQUEST_PROXY = {
+    "http": HTTP_PROXY,
+    "https": HTTPS_PROXY
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
