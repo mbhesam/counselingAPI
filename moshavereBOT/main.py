@@ -1,6 +1,6 @@
 import logging
 from telegram.ext import ApplicationBuilder, PicklePersistence
-from .handlers import main_handler
+import main_handler
 from moshavereAPI.settings import BOT_TOKEN, HTTP_PROXY, REQUEST_TIME_OUT
 
 BOT_NAME = 'hashem_crawler'
