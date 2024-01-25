@@ -1,6 +1,7 @@
 from django.db import models
 from django_jalali.db import models as jmodels
 
+
 # Create your models here.
 class Users(models.Model):
     GENDER_CHOICES = (

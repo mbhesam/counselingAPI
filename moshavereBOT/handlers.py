@@ -2,7 +2,7 @@ from services import chek_information, get_subcategory, get_advices
 from telegram import ReplyKeyboardMarkup, Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.constants import ParseMode
 import telegram.ext
-from utils import create_message_to_send
+from .utils import create_message_to_send
 from main_handler import STATES
 from common import (
     MESSAGE_CHOICE_NOT_PERMITTED,

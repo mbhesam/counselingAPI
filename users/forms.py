@@ -1,7 +1,7 @@
 from django import forms
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
-from utils import check_platform_support,is_username_exists
+from .utils import check_platform_support,is_username_exists
 class SignupInformationForm(forms.Form):
     first_name = forms.CharField(label='نام', max_length=100)
     last_name = forms.CharField(label='نام خانوادگی', max_length=100)

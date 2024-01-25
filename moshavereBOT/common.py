@@ -22,3 +22,4 @@ MESSAGE_CHOICE_NOT_PERMITTED = '''
 متن وارد شده جزو گزینه های مورد نظر نیست. 😢
 '''
 ADVICE_CHOICE_CASE = "✍️"
+BUTTON_GET_HEALTH_FIELDS="👨‍"

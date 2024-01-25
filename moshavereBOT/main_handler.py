@@ -1,7 +1,8 @@
 from handlers import (
     start_handler,
     get_option_handler,
-    get_health_field
+    get_health_field,
+    get_health_advice_subcategory_field
 )
 
 from common import (
@@ -42,7 +43,7 @@ main_handler = ConversationHandler(
 
         ],
         STATES['health_advices_step_1']: [
-            CallbackQueryHandler(get_health_advice_field),
+            CallbackQueryHandler(get_health_advice_subcategory_field),
         ],
         STATES['choice_not_permitted']: [
             MessageHandler(filters.Regex(BUTTON_HOME_PAGE), start_handler),
