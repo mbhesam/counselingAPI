@@ -1,17 +1,13 @@
-import logging
 from telegram.ext import ApplicationBuilder, PicklePersistence
-import main_handler
+from moshavereBOT.handlers import main_handler
 from moshavereAPI.settings import BOT_TOKEN, HTTP_PROXY, REQUEST_TIME_OUT
+from django.core.management.base import BaseCommand, CommandError
+import os
 
-BOT_NAME = 'hashem_crawler'
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG,
-)
-
-if __name__ == '__main__':
-    persistence = PicklePersistence(filepath='hashem_bot/bin/conversations')
+class Command(BaseCommand):
+    persistence = PicklePersistence(filepath='conversations/conversations')
     application = ApplicationBuilder().token(
         BOT_TOKEN
     ).get_updates_proxy_url(

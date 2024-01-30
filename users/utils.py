@@ -1,7 +1,5 @@
 from bs4 import BeautifulSoup
-from argparse import ArgumentParser
-import requests
-import json
+import jdatetime
 import urllib.request
 import telebot
 from moshavereAPI.settings import BOT_TOKEN
@@ -32,3 +30,4 @@ def is_username_exists(username):
     else:
         result = 'Error'
     return result
+

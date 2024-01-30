@@ -1,7 +1,6 @@
 from django.db import models
 from django_jalali.db import models as jmodels
 
-
 # Create your models here.
 class Users(models.Model):
     GENDER_CHOICES = (
@@ -26,5 +25,5 @@ class Users(models.Model):
     married = models.CharField(max_length=8,choices=MARRIED,null=False)
     marriage_history = models.IntegerField(null=False)
     children_numbers = models.IntegerField(null=False)
-    created_at = jmodels.jDateTimeField(null=False)
+    created_at = jmodels.jDateTimeField(auto_now_add=True,null=False)
 

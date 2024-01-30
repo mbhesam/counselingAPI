@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import locale
 from pathlib import Path
 import environ
 import os
@@ -46,12 +46,49 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_jalali',
+    'crispy_forms',
+    'crispy_bootstrap4',
     'rest_framework',
     'registerAPI',
+    'jalali_date',
     'drf_yasg',
     'corsheaders',
     'users',
+    'coreAPI',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+LANGUAGE_CODE = 'fa'
+
+# default settings (optional)
+JALALI_DATE_DEFAULTS = {
+   # if change it to true then all dates of the list_display will convert to the Jalali.
+   'LIST_DISPLAY_AUTO_CONVERT': False,
+   'Strftime': {
+        'date': '%y/%m/%d',
+        'datetime': '%H:%M:%S _ %y/%m/%d',
+    },
+    'Static': {
+        'js': [
+            # loading datepicker
+            'admin/js/django_jalali.min.js',
+            # OR
+            # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.core.js',
+            # 'admin/jquery.ui.datepicker.jalali/scripts/calendar.js',
+            # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc.js',
+            # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc-fa.js',
+            # 'admin/js/main.js',
+        ],
+        'css': {
+            'all': [
+                'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css',
+            ]
+        }
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -132,8 +169,8 @@ BOT_TOKEN = env("BOT_TOKEN")
 CHAT_ID = env("CHAT_ID")
 HTTP_PROXY = env("HTTP_PROXY")
 HTTPS_PROXY = env("HTTPS_PROXY")
-REQUEST_TIME_OUT = env("REQUEST_TIME_OUT")
-
+REQUEST_TIME_OUT = env("REQUEST_TIME_OUT",cast=float)
+DOMAIN = env("DOMAIN")
 REQUEST_PROXY = {
     "http": HTTP_PROXY,
     "https": HTTPS_PROXY
