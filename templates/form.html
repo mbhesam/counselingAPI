@@ -1,35 +1,18 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style_form.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@500&family=Noto+Sans+Arabic:wght@300&family=Roboto:ital@1&family=Tourney:wght@200&display=swap" rel="stylesheet">
-    <title>ثبت نام</title>
-</head>
-<body>
-<img src="register.jpg" alt="">
-<form action="{% url "register_information" platform username %}" method="post" accept-charset="UTF-8">
+<!-- templates/crispy_signup.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <form style="text-align: right" action="{% url "register_information" platform username %}" method="post" accept-charset="UTF-8">
     {% load static %}
     {% csrf_token %}
     {% load jalali_tags %}
-<p>{{ request.user.date_joined|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</p>
+        <p>{{ request.user.date_joined|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</p>
 		<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
-		<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
         {% for field in form %}
             <div class="form-group" class="col-sm-2 control-label">
-                {{ field.label }}
-                {{ field }}
+                {{ field|as_crispy_field}}
             </div>
         {% endfor %}
-
-        <div class="form-group">
-            {{ form.submit }}
-        </div>    <input type="submit" value="ثبت اطلاعات">
-</form>
-<script src="https://kit.fontawesome.com/850be74573.js" crossorigin="anonymous"></script>
-</body>
-</html>
+    <button type="submit" class="btn btn-primary">ثبت اطلاعات</button>
+    </form>
+{% endblock %}

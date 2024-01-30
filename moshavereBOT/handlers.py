@@ -51,7 +51,8 @@ async def start_handler(update: Update, context: telegram.ext.ContextTypes.DEFAU
 async def get_option_handler(update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE):
     choice = update.message.text
     if choice == MOSHAVERE_FIELDS[0]:
-        keyboard = [[f'{field}'] for field in HEALTH_FIELDS]
+        keyboard = BASE_KEYBOARD.copy()
+        keyboard.extend([[f'{field}'] for field in HEALTH_FIELDS])
         keyboard_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
         await update.message.reply_text(MESSAGE_HEALTH_FIELDS_CHOOSE, reply_markup=keyboard_markup,
                                         parse_mode=ParseMode.MARKDOWN_V2)
@@ -68,7 +69,8 @@ async def get_health_field(update: Update, context: telegram.ext.ContextTypes.DE
     if health_choice == HEALTH_FIELDS[0]:
         return STATES['health_counseling_step_1']
     elif health_choice == HEALTH_FIELDS[1]:
-        keyboard = get_subcategory(category_name='طب_و_سلامت')
+        keyboard = BASE_KEYBOARD.copy()
+        keyboard.extend(get_subcategory(category_name='طب_و_سلامت'))
         keyboard_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
         await update.message.reply_text(MESSAGE_HEALTH_FIELDS_CHOOSE, reply_markup=keyboard_markup,
                                         parse_mode=ParseMode.MARKDOWN_V2)
