@@ -38,6 +38,10 @@ services:
     restart: always
     command:
       - python /code/manage.py bot
+    env_file:
+      - ./web/.env
+    depends_on:
+      - django
     volumes:
       - ./uwsgi:/tmp/uwsgi/
       - ./static:/staticfiles/
