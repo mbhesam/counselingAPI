@@ -39,7 +39,7 @@ services:
     command:
       - python /code/manage.py bot
     env_file:
-      - ./web/.env
+      - .env
     depends_on:
       - django
     volumes:
