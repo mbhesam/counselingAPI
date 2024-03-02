@@ -1,10 +1,11 @@
-from .services import chek_information, get_subcategory
+from moshavereBOT.services import get_question_answers, chek_information, get_question_prefix, get_questions_name, get_question_text
 from telegram import ReplyKeyboardMarkup, Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.constants import ParseMode
 import telegram.ext
 from time import sleep
-from .utils import link_generator
-from .common import (
+from moshavereBOT.utils import link_generator
+from moshavereBOT.common import (
+    MESSAGE_HEALTH_SUB_FIELD,
     MESSAGE_CHOICE_NOT_PERMITTED,
     MOSHAVERE_FIELDS,
     MESSAGE_START_INTRO,
@@ -23,30 +24,58 @@ from telegram.ext import (
     filters,
     CallbackQueryHandler,
     )
-
+#
+# STATES = {
+#     'option_choosing': 1,
+#     'song_choosing': 2,
+#     'not_allowed': 3,
+#     'health_step_1': 4,
+#     'health_counseling_step_1': 5,
+#     'health_advices_step_1': 6,
+#     'choice_not_permitted': 7,
+# }
 STATES = {
     'option_choosing': 1,
-    'song_choosing': 2,
-    'not_allowed': 3,
-    'health_step_1': 4,
-    'health_counseling_step_1': 5,
-    'health_advices_step_1': 6,
-    'choice_not_permitted': 7,
 }
+questions = get_questions_name()
+for index,question_id in enumerate(questions):
+    STATES[question_id] = index + 2
+
+STATES['not_allow'] = len(questions) + 1
+#
+# async def start_handler(update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE):
+#     user_existance = chek_information(username=update.effective_user.username)
+#     if user_existance:
+#         await update.message.reply_text(MESSAGE_START_INTRO)
+#         keyboard = BASE_KEYBOARD.copy()
+#         keyboard.extend([[f'{field}'] for field in MOSHAVERE_FIELDS])
+#         keyboard_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
+#         await update.message.reply_text(MESSAGE_FIELD_CHOOSE, reply_markup=keyboard_markup,
+#                                         parse_mode=ParseMode.MARKDOWN)
+#         return STATES['option_choosing']
+#     else:
+#         await update.message.reply_text(MESSAGE_NOT_PERMITTED_USER)
+#         return STATES['not_allowed']
+
 
 async def start_handler(update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE):
     user_existance = chek_information(username=update.effective_user.username)
     if user_existance:
-        await update.message.reply_text(MESSAGE_START_INTRO)
+        try:
+            await update.message.reply_text(get_question_prefix(question_id=0))
+        except ValueError:
+            pass
+        state_question = get_question_text(question_id=0)
+        await update.message.reply_text(state_question)
+        answers_choices = get_question_answers(question_id=0)
         keyboard = BASE_KEYBOARD.copy()
-        keyboard.extend([[f'{field}'] for field in MOSHAVERE_FIELDS])
+        keyboard.extend([[f'{field}'] for field in answers_choices])
         keyboard_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-        await update.message.reply_text(MESSAGE_FIELD_CHOOSE, reply_markup=keyboard_markup,
-                                        parse_mode=ParseMode.MARKDOWN)
-        return STATES['option_choosing']
+
+
     else:
-        await update.message.reply_text(MESSAGE_NOT_PERMITTED_USER)
-        return STATES['not_allowed']
+        return STATES['not_allow']
+
 
 async def get_option_handler(update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE):
     choice = update.message.text
@@ -72,7 +101,7 @@ async def get_health_field(update: Update, context: telegram.ext.ContextTypes.DE
         keyboard = BASE_KEYBOARD.copy()
         keyboard.extend(get_subcategory(category_name='طب_و_سلامت'))
         keyboard_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
-        await update.message.reply_text(MESSAGE_HEALTH_FIELDS_CHOOSE, reply_markup=keyboard_markup,
+        await update.message.reply_text(MESSAGE_HEALTH_SUB_FIELD, reply_markup=keyboard_markup,
                                         parse_mode=ParseMode.MARKDOWN_V2)
         return STATES['health_advices_step_1']
     else:
