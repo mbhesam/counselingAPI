@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django.urls import path , include
+from django.urls import path, include
 import registerAPI.urls
-import coreAPI.urls
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
@@ -25,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', include(registerAPI.urls)),
     path('users/', include(users.urls)),
-    path('core/', include(coreAPI.urls)),
+#    path('core/', include(coreAPI.urls)),
 ]

@@ -1,33 +1,14 @@
-# import os
-# import sys
-#
-# sys.path.append('../moshavereAPI/')
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "moshavereAPI.settings")
 from users.models import Users
 from coreAPI.models import Questions, Answers
-from moshavereBOT.common import (
-    NO_ADVICE,
-    ADVICE_CHOICE_CASE
-)
+from moshavereAPI.settings import redis_client
 
 
-def chek_information(username) -> bool:
+def check_information(username) -> bool:
     try:
         Users.objects.get(username=username)
         return True
     except Users.DoesNotExist:
         return False
-
-
-# def get_subcategory(category_name):
-#     try:
-#         subcategory_objects = SubCategory.objects.filter(category__name=category_name)
-#     except:
-#         subcategory_objects = None
-#     subcategories = []
-#     for subcategory in subcategory_objects:
-#         subcategories.append([subcategory.name])
-#     return subcategories
 
 
 def get_questions_name(question_id="all") -> list:
@@ -38,12 +19,8 @@ def get_questions_name(question_id="all") -> list:
         question_objs = Questions.objects.filter(id=question_id)
     for question_object in question_objs:
         question_names.append(question_object.name)
-    
+
     return question_names
-
-
-def get_question_text(question_id) -> str:
-    return Questions.objects.get(id=question_id).original_question
 
 
 def get_question_prefix(question_id) -> str:
@@ -53,6 +30,22 @@ def get_question_prefix(question_id) -> str:
     return prefix
 
 
+def get_question_text(question_id) -> str:
+    return Questions.objects.get(id=question_id).original_question
+
+
 def get_question_answers(question_id) -> list:
     answers = [answer for answer in Questions.objects.get(id=question_id).self_answers.all()]
+    return answers
 
+
+def get_next_question_id(answer, self_question_id) -> int:
+    return Answers.objects.get(original_answer=answer, self_question_id=self_question_id).id
+
+
+def get_state_id(user_name) -> int:
+    return redis_client.get(user_name)
+
+
+def set_state_id(user_name, state_id):
+    redis_client.set(user_name, state_id)

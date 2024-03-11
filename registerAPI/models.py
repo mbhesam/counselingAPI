@@ -5,6 +5,9 @@ from django_jalali.db import models as jmodels
 class RegisterModel(models.Model):
     objects = jmodels.jManager()
     id = models.AutoField(primary_key=True)
-    phone_number = models.CharField(max_length=11)
-    sent_sms_at = jmodels.jDateTimeField()
-    is_mobile = models.BooleanField()
+    phone_number = models.CharField(max_length=11, verbose_name='شماره همراه')
+    sent_sms_at = jmodels.jDateTimeField(verbose_name='زمان فرستاده شدن پیامک')
+    is_mobile = models.BooleanField(verbose_name='آیا این شماره موبایل است؟')
+    class Meta:
+        verbose_name = 'ثبت نام'
+        verbose_name_plural = 'ثبت نام ها'

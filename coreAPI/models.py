@@ -1,31 +1,22 @@
 from django.db import models
 
-# Create your models here.
-# class Category(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=255)
-#
-# class SubCategory(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     category = models.ManyToManyField("Category", related_name="subcategory")
-#     name = models.CharField(max_length=255)
-#
-# class Advices(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     category = models.ManyToManyField("Category", related_name="advices")
-#     subcategory = models.ManyToManyField("SubCategory", related_name="advices", blank=True)
-#     content = models.TextField()
-#
 
 class Questions(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    prefix_question = models.TextField(default=None)
-    original_question = models.TextField(default=None)
+    name = models.CharField(max_length=100, verbose_name='نام سوال')
+    prefix_question = models.TextField(default=None, verbose_name='پیش متن سوال')
+    original_question = models.TextField(default=None, verbose_name='متن اصلی سوال')
+    class Meta:
+        verbose_name = 'سوال'
+        verbose_name_plural = 'سوال ها'
 
 class Answers(models.Model):
     id = models.AutoField(primary_key=True)
-    original_answer = models.CharField(max_length=255)
-    self_question = models.ForeignKey(to=Questions, related_name="self_answers", default=None)
-    next_question = models.ForeignKey(to=Questions, related_name="last_answers", default=None)
-
+    original_answer = models.CharField(max_length=255, verbose_name='جواب')
+    self_question = models.ForeignKey(to=Questions, related_name="self_answers", on_delete=models.CASCADE,
+                                      verbose_name='سوال مربوط به این جواب')
+    next_question = models.ForeignKey(to=Questions, related_name="last_answers", on_delete=models.CASCADE,
+                                      verbose_name='سوال بعدی این جواب')
+    class Meta:
+        verbose_name = 'جواب'
+        verbose_name_plural = 'جواب ها'
