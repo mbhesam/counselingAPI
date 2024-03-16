@@ -150,20 +150,30 @@ DB_PASSWORD = env("DB_PASSWORD")
 DB_PORT = env("DB_PORT")
 BOT_TOKEN = env("BOT_TOKEN")
 CHAT_ID = env("CHAT_ID")
-HTTP_PROXY = env("HTTP_PROXY")
-HTTPS_PROXY = env("HTTPS_PROXY")
-SOCKS_PROXY = env("SOCKS_PROXY")
+PROXY_TYPE = env("PROXY_TYPE")
 REQUEST_TIME_OUT = env("REQUEST_TIME_OUT", cast=float)
 DOMAIN = env("DOMAIN")
 REDIS_HOST = env("REDIS_HOST")
 REDIS_PORT = env("REDIS_PORT")
 REDIS_USERNAME = env("REDIS_USERNAME")
 REDIS_PASSWORD = env("REDIS_PASSWORD")
-REQUEST_PROXY = {
-#    "http": HTTP_PROXY,
-#    "https": HTTPS_PROXY,
-    "socks": SOCKS_PROXY,
-}
+
+if PROXY_TYPE == 'socks5':
+    REQUEST_PROXY = {
+        "socks5": env("SOCKS_PROXY"),
+    }
+    PROXY_URL = env("SOCKS_PROXY")
+elif PROXY_TYPE == 'http':
+    REQUEST_PROXY = {
+        "http": env("HTTP_PROXY"),
+        "https": env("HTTP_PROXY"),
+    }
+    PROXY_URL = env("HTTP_PROXY")
+else:
+    REQUEST_PROXY = {
+        PROXY_TYPE: env("HTTPS_PROXY"),
+    }
+    PROXY_URL = env("HTTPS_PROXY")
 
 DATABASES = {
     'default': {

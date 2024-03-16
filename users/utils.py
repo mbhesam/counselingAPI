@@ -14,7 +14,7 @@ def check_platform_support(platform):
     return True
 
 def get_html(url, params=None):
-    r = requests.get(url, params=params,proxies=REQUEST_PROXY)
+    r = requests.get(url, params=params, proxies=REQUEST_PROXY)
     return r
 
 def is_username_exists(username):

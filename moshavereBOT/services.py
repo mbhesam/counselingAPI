@@ -5,10 +5,14 @@ from moshavereAPI.settings import redis_client
 
 def check_information(username) -> bool:
     try:
-        Users.objects.get(username=username)
+        Users.objects.get(username__iexact=username)
         return True
     except Users.DoesNotExist:
         return False
+
+
+def get_first_question_id() -> int:
+    return Questions.objects.get(start=True).id
 
 
 def get_questions_name(question_id="all") -> list:
@@ -25,7 +29,7 @@ def get_questions_name(question_id="all") -> list:
 
 def get_question_prefix(question_id) -> str:
     prefix = Questions.objects.get(id=question_id).prefix_question
-    if prefix is None:
+    if prefix is None or prefix == "":
         raise ValueError()
     return prefix
 
@@ -35,12 +39,20 @@ def get_question_text(question_id) -> str:
 
 
 def get_question_answers(question_id) -> list:
-    answers = [answer for answer in Questions.objects.get(id=question_id).self_answers.all()]
+    answers = [answer.original_answer for answer in Questions.objects.get(id=question_id).self_answers.all()]
     return answers
 
 
 def get_next_question_id(answer, self_question_id) -> int:
-    return Answers.objects.get(original_answer=answer, self_question_id=self_question_id).id
+    return Answers.objects.get(original_answer=answer, self_question_id=self_question_id).next_question_id
+
+
+def is_this_end(id) -> bool:
+    try:
+        Questions.objects.get(id=id, end=True)
+    except Questions.DoesNotExist:
+        return False
+    return True
 
 
 def get_state_id(user_name) -> int:

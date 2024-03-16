@@ -1,18 +1,18 @@
 from django.shortcuts import render
-
+from moshavereBOT.common import  MESSAGE_USER_ALREADY_SUBMITTED
 # Create your views here.
 from django.http import HttpResponseRedirect,HttpResponse
 from django.shortcuts import render
 from .forms import SignupInformationForm
 from .models import Users
 import jdatetime
+from django.db.utils import IntegrityError
 
 def get_signup_info(request,platform,username):
     if request.method == "POST":
         form = SignupInformationForm(request.POST,initial={'platform': platform, 'username': username})
         if form.is_valid():
             user_data = form.cleaned_data
-            print(type(user_data['birthday_at']))
             user = Users(
                 first_name=user_data['first_name'],
                 last_name=user_data['last_name'],
@@ -27,7 +27,10 @@ def get_signup_info(request,platform,username):
                 marriage_history=user_data['marriage_history'],
                 children_numbers=user_data['children_numbers']
             )
-            user.save()
+            try:
+                user.save()
+            except IntegrityError:
+                return HttpResponseRedirect("/users/alreadysubmitted")
             return HttpResponseRedirect("/users/thanks")
     else:
         form = SignupInformationForm()
