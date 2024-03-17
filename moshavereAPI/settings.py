@@ -63,7 +63,8 @@ JALALI_DATE_DEFAULTS = {
     'Static': {
         'js': [
             # loading datepicker
-            'admin/js/django_jalali.min.js',
+            'admin/js/django_jalali..js',
+
             # OR
             # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.core.js',
             # 'admin/jquery.ui.datepicker.jalali/scripts/calendar.js',
