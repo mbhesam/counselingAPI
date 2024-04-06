@@ -17,7 +17,7 @@ class Users(models.Model):
     last_name = models.CharField(max_length=100, null=False, verbose_name='نام خانوادگی')
     platform = models.CharField(max_length=20, null=False, verbose_name='پلتفرم پاسخ گویی ربات')
     username = models.CharField(max_length=200, null=False, unique=True, verbose_name='آی دی')
-    gender = models.CharField(max_length=5, choices=GENDER_CHOICES, null=False, verbose_name='جنسیت')
+    gender = models.CharField(max_length=5, choices=GENDER_CHOICES, null=False, verbose_name='جنسیت') # required
     birthday_at = jmodels.jDateTimeField(null=False, verbose_name='تاریخ تولد')
     father_name = models.CharField(max_length=100, null=False, verbose_name='نام پدر')
     mother_name = models.CharField(max_length=100, null=False, verbose_name='نام مادر')
@@ -25,7 +25,7 @@ class Users(models.Model):
     married = models.CharField(max_length=8, choices=MARRIED, null=False, verbose_name='متاهل')
     marriage_history = models.IntegerField(null=False, verbose_name='سابقه تاهل')
     children_numbers = models.IntegerField(null=False, verbose_name='تعداد فرزندان')
-    created_at = jmodels.jDateTimeField(auto_now_add=True, null=False, verbose_name='ساخته شده در زمان')
+    created_at = jmodels.jDateTimeField(auto_now_add=True, null=False, verbose_name='ساخته شده در زمان')# required
 
     class Meta:
         verbose_name = 'مراجعه کنندگان'
