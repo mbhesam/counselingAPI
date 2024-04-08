@@ -22,6 +22,15 @@ services:
     depends_on:
       - django
 
+  redis:
+    image: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+      - ../redis-config/redis.conf:/usr/local/etc/redis/redis.conf
+
   django:
     build: .
     restart: always
