@@ -33,9 +33,6 @@ services:
   django:
     build: .
     restart: always
-    command: >
-      sh -c "python /code/manage.py collectstatic --noinput
-      && uwsgi --ini /code/moshavereAPI.uwsgi.ini"
     volumes:
       - ./uwsgi:/tmp/uwsgi/
       - ./static:/staticfiles/
@@ -44,8 +41,8 @@ services:
   django-bot:
     build: .
     restart: always
-    command:
-      - python /code/manage.py bot
+    command: > 
+      sh -c "python /code/manage.py bot"
     env_file:
       - .env
     depends_on:
