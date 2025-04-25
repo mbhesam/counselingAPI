@@ -7,7 +7,7 @@ from .serializers import Phone_serializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import RegisterModel
-from .utils import is_mobile,revalidate_phone
+from .utils import is_mobile, revalidate_phone, send_sms
 from .common import (
     REGISTER_FAILD,
     REGISTER_ACCEPT_MOBILE,
@@ -35,6 +35,7 @@ class RegisterView(APIView):
             if is_mobile(phone_number=result_validate) == True:
                 object = RegisterModel(phone_number=result_validate, sent_sms_at=jdatetime.datetime.now(),is_mobile=True)
                 object.save()
+                send_sms(phone_number=result_validate)
                 return Response(REGISTER_ACCEPT_MOBILE,status.HTTP_200_OK)
             else:
                 object = RegisterModel(phone_number=result_validate, sent_sms_at=jdatetime.datetime.now(),is_mobile=False)

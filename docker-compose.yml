@@ -3,10 +3,10 @@ version: '3.5'
 services:
   postgres:
     container_name: postgres_container
-    image: postgres
+    image: docker.arvancloud.ir/postgres:17.4
     env_file: .env
     volumes:
-       - ../data/postgres:/data/postgres
+       - ../volumes/postgres/data/postgres:/data/postgres
     ports:
       - "9995:5432"
     restart: unless-stopped
@@ -23,12 +23,13 @@ services:
       - django
 
   redis:
-    image: redis
+    image: docker.arvancloud.ir/redis:7.4.2
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
       - "6379:6379"
     volumes:
-      - ../redis-config/redis.conf:/usr/local/etc/redis/redis.conf
+      - ../volumes/redis/redis-config/redis.conf:/usr/local/etc/redis/redis.conf
+      - ../volumes/redis/data:/data
 
   django:
     build: .
@@ -37,17 +38,17 @@ services:
       - ./uwsgi:/tmp/uwsgi/
       - ./static:/staticfiles/
       - ./:/code
-
-  django-bot:
-    build: .
-    restart: always
-    command: > 
-      sh -c "python /code/manage.py bot"
-    env_file:
-      - .env
-    depends_on:
-      - django
-    volumes:
-      - ./uwsgi:/tmp/uwsgi/
-      - ./static:/staticfiles/
-      - ./:/code
+#
+#  django-bot:
+#    build: .
+#    restart: always
+#    command: >
+#      sh -c "python /code/manage.py bot"
+#    env_file:
+#      - .env
+#    depends_on:
+#      - django
+#    volumes:
+#      - ./uwsgi:/tmp/uwsgi/
+#      - ./static:/staticfiles/
+#      - ./:/code
