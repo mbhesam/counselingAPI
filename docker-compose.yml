@@ -6,7 +6,7 @@ services:
     image: docker.arvancloud.ir/postgres:17.4
     env_file: .env
     volumes:
-       - ../volumes/postgres/data/postgres:/data/postgres
+       - ../volumes/counselingAPI/postgres/data/postgres:/data/postgres
     ports:
       - "9995:5432"
     restart: unless-stopped
@@ -28,8 +28,8 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ../volumes/redis/redis-config/redis.conf:/usr/local/etc/redis/redis.conf
-      - ../volumes/redis/data:/data
+      - ../volumes/counselingAPI/redis/redis-config/redis.conf:/usr/local/etc/redis/redis.conf
+      - ../volumes/counselingAPI/redis/data:/data
 
   django:
     build: .
