@@ -159,22 +159,22 @@ REDIS_PORT = env("REDIS_PORT")
 REDIS_USERNAME = env("REDIS_USERNAME")
 REDIS_PASSWORD = env("REDIS_PASSWORD")
 
-if PROXY_TYPE == 'socks5':
-    REQUEST_PROXY = {
-        "socks5": env("SOCKS_PROXY"),
-    }
-    PROXY_URL = env("SOCKS_PROXY")
-elif PROXY_TYPE == 'http':
-    REQUEST_PROXY = {
-        "http": env("HTTP_PROXY"),
-        "https": env("HTTP_PROXY"),
-    }
-    PROXY_URL = env("HTTP_PROXY")
-else:
-    REQUEST_PROXY = {
-        PROXY_TYPE: env("HTTPS_PROXY"),
-    }
-    PROXY_URL = env("HTTPS_PROXY")
+# if PROXY_TYPE == 'socks5':
+#     REQUEST_PROXY = {
+#         "socks5": env("SOCKS_PROXY"),
+#     }
+#     PROXY_URL = env("SOCKS_PROXY")
+# elif PROXY_TYPE == 'http':
+#     REQUEST_PROXY = {
+#         "http": env("HTTP_PROXY"),
+#         "https": env("HTTP_PROXY"),
+#     }
+#     PROXY_URL = env("HTTP_PROXY")
+# else:
+#     REQUEST_PROXY = {
+#         PROXY_TYPE: env("HTTPS_PROXY"),
+#     }
+#     PROXY_URL = env("HTTPS_PROXY")
 
 DATABASES = {
     'default': {

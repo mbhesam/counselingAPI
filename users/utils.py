@@ -4,7 +4,7 @@ import urllib.request
 import telebot
 from moshavereAPI.settings import BOT_TOKEN
 import requests
-from moshavereAPI.settings import REQUEST_PROXY
+#from moshavereAPI.settings import REQUEST_PROXY
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -14,7 +14,8 @@ def check_platform_support(platform):
     return True
 
 def get_html(url, params=None):
-    r = requests.get(url, params=params, proxies=REQUEST_PROXY)
+#    r = requests.get(url, params=params, proxies=REQUEST_PROXY)
+    r = requests.get(url, params=params)
     return r
 
 def is_username_exists(username):
