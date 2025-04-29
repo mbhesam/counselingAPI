@@ -33,7 +33,7 @@ class RegisterView(APIView):
             return Response(REGISTER_FAILD_WRONG_NUMBER, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
         # Check if record exists and if sent_sms_at is within the past day
-        existing = RegisterModel.objects.filter(phone_number=result_validate).first()
+        existing = RegisterModel.objects.filter(phone_number=result_validate).order_by('-sent_sms_at').first()
         if existing and existing.sent_sms_at > jdatetime.datetime.now() - jdatetime.timedelta(days=1):
             return Response(REGISTER_FAILD, status=status.HTTP_429_TOO_MANY_REQUESTS)  # Too many requests
 
