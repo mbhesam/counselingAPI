@@ -16,32 +16,41 @@ from .common import (
     REGISTER_FAILD_WRONG_NUMBER,
     SHOW_REGISTERED_PHONE_NOT_FOUND
 )
-
 class RegisterView(APIView):
     @swagger_auto_schema(request_body=Phone_serializer)
-    def post(self,request):
+    def post(self, request):
         try:
             phone_recieved = Phone_serializer(data=request.data)
             phone_recieved.is_valid(raise_exception=True)
             phone_obj = phone_recieved.validated_data
         except:
-            return Response(REGISTER_FAILD,status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            return Response(REGISTER_FAILD, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
         result_validate = revalidate_phone(phone_obj=phone_obj)
         if result_validate == "CHAR_COUNT":
             return Response(REGISTER_FAILD_CHAR_COUNT, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         elif result_validate == "WRONG_NUMBER":
             return Response(REGISTER_FAILD_WRONG_NUMBER, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+        # Check if record exists and if sent_sms_at is within the past day
+        existing = RegisterModel.objects.filter(phone_number=result_validate).first()
+        if existing and existing.sent_sms_at > jdatetime.datetime.now() - jdatetime.timedelta(days=1):
+            return Response(REGISTER_FAILD, status=status.HTTP_429_TOO_MANY_REQUESTS)  # Too many requests
+
+        is_mobile_flag = is_mobile(phone_number=result_validate)
+        obj = RegisterModel(
+            phone_number=result_validate,
+            sent_sms_at=jdatetime.datetime.now(),
+            is_mobile=is_mobile_flag
+        )
+        obj.save()
+
+        if is_mobile_flag:
+            if check_time():  # Assuming this checks whether SMS should be sent now
+                send_sms(phone_number=result_validate)
+            return Response(REGISTER_ACCEPT_MOBILE, status=status.HTTP_200_OK)
         else:
-            if is_mobile(phone_number=result_validate) == True:
-                object = RegisterModel(phone_number=result_validate, sent_sms_at=jdatetime.datetime.now(),is_mobile=True)
-                object.save()
-                if check_time() == True:
-                    send_sms(phone_number=result_validate)
-                return Response(REGISTER_ACCEPT_MOBILE,status.HTTP_200_OK)
-            else:
-                object = RegisterModel(phone_number=result_validate, sent_sms_at=jdatetime.datetime.now(),is_mobile=False)
-                object.save()
-                return Response(REGISTER_ACCEPT_LANDLINE,status.HTTP_200_OK)
+            return Response(REGISTER_ACCEPT_LANDLINE, status=status.HTTP_200_OK)
 
 class ShowRegisteration(APIView):
     include = openapi.Parameter('include', openapi.IN_QUERY,
