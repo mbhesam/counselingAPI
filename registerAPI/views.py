@@ -53,17 +53,26 @@ class RegisterView(APIView):
             return Response(REGISTER_ACCEPT_LANDLINE, status=status.HTTP_200_OK)
 
 class ShowRegisteration(APIView):
-    include = openapi.Parameter('include', openapi.IN_QUERY,
-                                 description="show phone number include this number",
-                                 type=openapi.TYPE_STRING)
+    include = openapi.Parameter(
+        'include',
+        openapi.IN_QUERY,
+        description="Show phone numbers that include this substring",
+        type=openapi.TYPE_STRING
+    )
+
     @swagger_auto_schema(manual_parameters=[include])
-    def get(self,request):
+    def get(self, request):
         phone_substring = request.query_params.get("include")
+
         try:
-            query_object = list(RegisterModel.objects.filter(phone_number__contains=phone_substring))
-            result = []
-            for obj in query_object:
-                result.append(obj.phone_number)
+            if phone_substring:
+                query_object = RegisterModel.objects.filter(phone_number__contains=phone_substring)
+            else:
+                query_object = RegisterModel.objects.all()
+
+            result = [obj.phone_number for obj in query_object]
+
         except Exception as ex:
             result = SHOW_REGISTERED_PHONE_NOT_FOUND
-        return Response(result,status.HTTP_200_OK)
+
+        return Response(result, status.HTTP_200_OK)
