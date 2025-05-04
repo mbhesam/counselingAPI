@@ -35,6 +35,7 @@ class RegisterView(APIView):
         # Check if record exists and if sent_sms_at is within the past day
         existing = RegisterModel.objects.filter(phone_number=result_validate).order_by('-sent_sms_at').first()
         if existing and existing.sent_sms_at > jdatetime.datetime.now() - jdatetime.timedelta(days=1):
+            print(f"TOO MANY REQUEST BY {result_validate}")
             return Response(REGISTER_FAILD, status=status.HTTP_429_TOO_MANY_REQUESTS)  # Too many requests
 
         is_mobile_flag = is_mobile(phone_number=result_validate)
@@ -48,8 +49,10 @@ class RegisterView(APIView):
         if is_mobile_flag:
             if check_time():  # Assuming this checks whether SMS should be sent now
                 send_sms(phone_number=result_validate)
+                print(f"SMS SENT TO NUMBER: {result_validate}")
             return Response(REGISTER_ACCEPT_MOBILE, status=status.HTTP_200_OK)
         else:
+            print(f"PHONE NUMBER NOT RECOGNIZED: {result_validate}\nOR TIME IS NOT APPOPRIATE FOR SENDING SMS")
             return Response(REGISTER_ACCEPT_LANDLINE, status=status.HTTP_200_OK)
 
 class ShowRegisteration(APIView):
